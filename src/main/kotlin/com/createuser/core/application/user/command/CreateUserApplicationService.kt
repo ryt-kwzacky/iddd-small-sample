@@ -1,4 +1,4 @@
-package com.createuser.core.application.user.command
+package com.createuser.core.application.command.user
 
 import com.createuser.dddFoundation.application.command.CommandApplicationService
 
