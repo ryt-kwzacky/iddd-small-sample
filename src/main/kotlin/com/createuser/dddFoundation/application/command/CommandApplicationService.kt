@@ -1,3 +1,0 @@
-package com.createuser.dddFoundation.application.command
-
-abstract class CommandApplicationService
