@@ -1,8 +1,6 @@
-package com.createuser.core.domain.userAccount
+package com.createuser.dddFoundation.domain
 
-import com.createuser.dddFoundation.domain.AbstractId
-
-class UserId(value: String): AbstractId(value) {
+open class AbstractId(val value: String) {
 
     override fun equals(other: Any?): Boolean {
         if (other !== null && other::class.java == this::class.java)
@@ -20,7 +18,7 @@ class UserId(value: String): AbstractId(value) {
         /**
          * Reasonable number to make hasCode different from other classes.
          */
-        val result = 432
+        val result = 312
 
         return prime * result + this.value.hashCode()
     }

@@ -20,19 +20,54 @@ class CreateUserUseCaseTests {
 			userAccountRepository = userAccountRepository
 	)
 
-	val defaultId = UserId("test-id")
-	val defaultName = UserName("test-name")
-	val defaultSex = UserSexType.MAN
-	val defaultAge = UserAge(20)
-	val defaultSelfIntroduction = SelfIntroduction("test-self-introduction")
-
 	@Before
 	fun setUp() {
 		userAccountRepository.reset()
 	}
 
 	@Test
-	fun `handle - create UserAccount under the right conditions `() {
+	fun `handle - create UserAccount under the right conditions`() {
+		val defaultId = UserId("test-id")
+		val defaultName = UserName("test-name")
+		val defaultSex = UserSexType.MAN
+		val defaultAge = UserAge(20)
+		val defaultSelfIntroduction = SelfIntroduction("test-self-introduction")
+
+		val command = CreateUserAccountCommand.create(
+				id = defaultId.value,
+				name = defaultName.value,
+				sex = defaultSex,
+				age = defaultAge.value,
+				selfIntroduction = defaultSelfIntroduction.value
+		)
+
+		/**
+		 * Before
+		 */
+		assertThat(userAccountRepository.findById(defaultId).exists()).isFalse()
+		assertThat(userAccountRepository.count()).isEqualTo(0)
+
+		/**
+		 * Perform useCase
+		 */
+		useCase.handle(command)
+
+		/**
+		 * After
+		 */
+		assertThat(userAccountRepository.findById(defaultId).exists()).isTrue()
+		assertThat(userAccountRepository.count()).isEqualTo(1)
+
+	}
+
+	@Test
+	fun `handle - raise exception when UserName characters is over the specification`() {
+		val defaultId = UserId("the-name-over-16-characters")
+		val defaultName = UserName("test-name")
+		val defaultSex = UserSexType.WOMAN
+		val defaultAge = UserAge(20)
+		val defaultSelfIntroduction = SelfIntroduction("test-self-introduction")
+
 		val command = CreateUserAccountCommand.create(
 				id = defaultId.value,
 				name = defaultName.value,
@@ -56,7 +91,7 @@ class CreateUserUseCaseTests {
 		 * After
 		 */
 		assertThat(userAccountRepository.findById(defaultId).exists()).isFalse()
-		assertThat(userAccountRepository.count()).isEqualTo(1)
+		assertThat(userAccountRepository.count()).isEqualTo(0)
 
 	}
 

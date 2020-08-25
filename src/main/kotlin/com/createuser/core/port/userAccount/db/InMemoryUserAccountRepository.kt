@@ -15,7 +15,8 @@ class InMemoryUserAccountRepository: UserAccountRepository {
 
     fun count() = repository.count()
 
-    override fun findById(id: UserId): FindResult<UserAccount> = FindResult(repository.findBy { it.toDTO().id == id })
+    override fun findById(id: UserId): FindResult<UserAccount> =
+        FindResult(repository.findBy { it.toDTO().id == id })
 
     override fun store(userAccount: UserAccount) {
         val dto = userAccount.toDTO()
