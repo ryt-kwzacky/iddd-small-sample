@@ -1,6 +1,6 @@
 package com.createuser.core.domain.userAccount
 
-class UserName(val value: String) {
+class SelfIntroduction(val value: String) {
 
     fun toDTO(): DTO = DTO(value = value)
 

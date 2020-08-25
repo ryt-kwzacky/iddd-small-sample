@@ -1,5 +1,6 @@
 package com.createuser.unit.core.user
 
+import com.createuser.core.domain.userAccount.*
 import com.createuser.core.port.userAccount.db.InMemoryUserAccountRepository
 import com.createuser.core.useCase.userAccount.CreateUserAccountUseCase
 import com.createuser.core.useCase.userAccount.command.CreateUserAccountCommand
@@ -19,6 +20,12 @@ class CreateUserUseCaseTests {
 			userAccountRepository = userAccountRepository
 	)
 
+	val defaultId = UserId("test-id")
+	val defaultName = UserName("test-name")
+	val defaultSex = UserSexType.MAN
+	val defaultAge = UserAge(20)
+	val defaultSelfIntroduction = SelfIntroduction("test-self-introduction")
+
 	@Before
 	fun setUp() {
 		userAccountRepository.reset()
@@ -26,26 +33,30 @@ class CreateUserUseCaseTests {
 
 	@Test
 	fun `handle - create UserAccount under the right conditions `() {
-		val command = CreateUserAccountCommand.create()
-		var todo = command.todo
+		val command = CreateUserAccountCommand.create(
+				id = defaultId.value,
+				name = defaultName.value,
+				sex = defaultSex,
+				age = defaultAge.value,
+				selfIntroduction = defaultSelfIntroduction.value
+		)
 
 		/**
 		 * Before
 		 */
-		assertThat(todo).isEqualTo("TODO")
+		assertThat(userAccountRepository.findById(defaultId).exists()).isFalse()
+		assertThat(userAccountRepository.count()).isEqualTo(0)
 
 		/**
 		 * Perform useCase
 		 */
-		// useCase.handle(command)
-		todo = "todo"
-
+		useCase.handle(command)
 
 		/**
 		 * After
 		 */
-		assertThat(todo).isEqualTo("todo")
-
+		assertThat(userAccountRepository.findById(defaultId).exists()).isFalse()
+		assertThat(userAccountRepository.count()).isEqualTo(1)
 
 	}
 
