@@ -13,7 +13,7 @@ val useCase = CreateUserAccountUseCase(
 )
 
 val defaultId = UserId("test-id")
-val defaultName = UserName("test-name")
+val defaultName = UserName("the-name-over-16-characters")
 val defaultSex = UserSexType.MAN
 val defaultAge = UserAge(20)
 val defaultSelfIntroduction = SelfIntroduction("test-self-introduction")
@@ -27,15 +27,5 @@ val command = CreateUserAccountCommand.create(
 )
 
 fun main() {
-    val userAccount = UserAccount.createNewly(
-            id = defaultId,
-            name = defaultName,
-            sex = defaultSex,
-            age = defaultAge,
-            selfIntroduction = defaultSelfIntroduction
-    )
-
-    val dto = userAccount.toDTO()
-    println(dto.id)
-
+    useCase.handle(command)
 }

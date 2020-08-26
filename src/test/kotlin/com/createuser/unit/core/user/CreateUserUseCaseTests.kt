@@ -25,14 +25,14 @@ class CreateUserUseCaseTests {
 		userAccountRepository.reset()
 	}
 
+	val defaultId = UserId("test-id")
+	val defaultName = UserName("test-name")
+	val defaultSex = UserSexType.MAN
+	val defaultAge = UserAge(20)
+	val defaultSelfIntroduction = SelfIntroduction("test-self-introduction")
+
 	@Test
 	fun `handle - create UserAccount under the right conditions`() {
-		val defaultId = UserId("test-id")
-		val defaultName = UserName("test-name")
-		val defaultSex = UserSexType.MAN
-		val defaultAge = UserAge(20)
-		val defaultSelfIntroduction = SelfIntroduction("test-self-introduction")
-
 		val command = CreateUserAccountCommand.create(
 				id = defaultId.value,
 				name = defaultName.value,
@@ -61,12 +61,11 @@ class CreateUserUseCaseTests {
 	}
 
 	@Test
-	fun `handle - raise exception when UserName characters is over the specification`() {
-		val defaultId = UserId("the-name-over-16-characters")
-		val defaultName = UserName("test-name")
+	fun `handle - raise exception when same id is registering`() {
+		val defaultName = UserName("test-name2")
 		val defaultSex = UserSexType.WOMAN
-		val defaultAge = UserAge(20)
-		val defaultSelfIntroduction = SelfIntroduction("test-self-introduction")
+		val defaultAge = UserAge(25)
+		val defaultSelfIntroduction = SelfIntroduction("test-self-introduction2")
 
 		val command = CreateUserAccountCommand.create(
 				id = defaultId.value,
@@ -76,11 +75,13 @@ class CreateUserUseCaseTests {
 				selfIntroduction = defaultSelfIntroduction.value
 		)
 
+		useCase.handle(command)
+
 		/**
 		 * Before
 		 */
-		assertThat(userAccountRepository.findById(defaultId).exists()).isFalse()
-		assertThat(userAccountRepository.count()).isEqualTo(0)
+		assertThat(userAccountRepository.findById(defaultId).exists()).isTrue()
+		assertThat(userAccountRepository.count()).isEqualTo(1)
 
 		/**
 		 * Perform useCase
@@ -90,8 +91,8 @@ class CreateUserUseCaseTests {
 		/**
 		 * After
 		 */
-		assertThat(userAccountRepository.findById(defaultId).exists()).isFalse()
-		assertThat(userAccountRepository.count()).isEqualTo(0)
+		assertThat(userAccountRepository.findById(defaultId).exists()).isTrue()
+		assertThat(userAccountRepository.count()).isEqualTo(1)
 
 	}
 

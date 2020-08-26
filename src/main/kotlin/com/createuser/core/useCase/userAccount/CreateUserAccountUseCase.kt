@@ -11,6 +11,9 @@ class CreateUserAccountUseCase(
         @Autowired private val userAccountRepository: UserAccountRepository
 ) {
     fun handle(command: CreateUserAccountCommand) {
+        if (userAccountRepository.findById(command.id).exists())
+            return
+
         val newUserAccount = UserAccount.createNewly(
                 id = command.id,
                 name = command.name,
