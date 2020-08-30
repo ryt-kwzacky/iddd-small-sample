@@ -5,7 +5,13 @@ val springBootVersion by extra("2.3.2.RELEASE")
 
 plugins {
 	id("org.springframework.boot") version "2.3.2.RELEASE"
+
+	/**
+	 * A Gradle plugin that provides Maven-like dependency management and exclusions
+	 * @link https://docs.spring.io/dependency-management-plugin/docs/current-SNAPSHOT/reference/html/
+	 */
 	id("io.spring.dependency-management") version "1.0.9.RELEASE"
+
 	kotlin("jvm") version "1.3.72"
 	kotlin("plugin.spring") version "1.3.72"
 }
@@ -30,7 +36,12 @@ dependencies {
 	 * which defines how a client may access a database.
 	 * This is used for migration, etc.
 	 */
-	// implementation("org.springframework.boot:spring-boot-starter-jdbc:$springBootVersion")
+	implementation("org.springframework.boot:spring-boot-starter-jdbc:$springBootVersion")
+
+	/**
+	 * Database for in memory
+	 */
+	runtimeOnly("com.h2database:h2")
 
 	/**
 	 * Libraries to use Kotlin.
@@ -45,6 +56,8 @@ dependencies {
 	 * @link https://github.com/FasterXML/jackson-module-kotlin
 	 */
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.11.2")
+
+	implementation("org.apache.commons:commons-lang3")
 }
 
 tasks.withType<Test> {

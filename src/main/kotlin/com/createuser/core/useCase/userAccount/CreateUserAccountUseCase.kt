@@ -5,11 +5,13 @@ import com.createuser.core.domain.userAccount.UserAccountRepository
 import com.createuser.core.useCase.userAccount.command.CreateUserAccountCommand
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class CreateUserAccountUseCase(
         @Autowired private val userAccountRepository: UserAccountRepository
 ) {
+    @Transactional
     fun handle(command: CreateUserAccountCommand) {
         if (userAccountRepository.findById(command.id).exists())
             return
