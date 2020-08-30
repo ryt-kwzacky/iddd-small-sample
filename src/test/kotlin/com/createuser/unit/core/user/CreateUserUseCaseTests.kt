@@ -65,7 +65,6 @@ class CreateUserUseCaseTests {
 		val defaultName = UserName("test-name2")
 		val defaultSex = UserSexType.WOMAN
 		val defaultAge = UserAge(25)
-		val defaultSelfIntroduction = SelfIntroduction("test-self-introduction2")
 
 		val command = CreateUserAccountCommand.create(
 				id = defaultId.value,
